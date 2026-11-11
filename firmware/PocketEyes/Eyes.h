@@ -74,7 +74,7 @@ void render(Surface& surface, int width, int height, Stage stage, uint32_t ms) {
   const float scale = fminf(width / 128.0f, height / 64.0f);
   const float ox = (width - 128 * scale) / 2;
   const float oy = (height - 64 * scale) / 2;
-  auto rect = [&](float x, float y, float w, float h, float r, bool on = true) {
+  auto rect = [&](float x, float y, float w, float h, float r, bool on) {
     const int iw = static_cast<int>(lroundf(w * scale));
     const int ih = static_cast<int>(lroundf(h * scale));
     if (iw < 1 || ih < 1) return;
@@ -85,10 +85,10 @@ void render(Surface& surface, int width, int height, Stage stage, uint32_t ms) {
   };
   if (stage == Stage::Demo) {
     // A project-made display check, never presented as the factory firmware.
-    rect(10, 10, 108, 2, 0); rect(10, 52, 108, 2, 0);
+    rect(10, 10, 108, 2, 0, true); rect(10, 52, 108, 2, 0, true);
     const float t = static_cast<float>(ms % 4000) / 4000;
     const float x = 15 + 82 * (0.5f - 0.5f * cosf(t * 6.2831853f));
-    rect(x, 25, 16, 16, 4);
+    rect(x, 25, 16, 16, 4, true);
     return;
   }
   const Pose p = pose(ms);
@@ -99,7 +99,7 @@ void render(Surface& surface, int width, int height, Stage stage, uint32_t ms) {
     const float w = 27 + 2 * p.happy;
     const float x = (eye == 0 ? 29 : 72) + p.x - p.happy;
     const float y = 29 + p.y - h / 2;
-    rect(x, y, w, h, 7);
+    rect(x, y, w, h, 7, true);
     // Raise a rounded lower lid into each eye for a happy crescent.
     if (p.happy > 0) rect(x - 1, y + h * (1 - 0.64f * p.happy),
                          w + 2, h * 0.64f * p.happy + 10, 9, false);
@@ -107,7 +107,7 @@ void render(Surface& surface, int width, int height, Stage stage, uint32_t ms) {
   // A tiny smile appears only during the happy beat.
   if (p.happy > 0.4f) {
     const float y = 46 + p.y;
-    rect(58, y, 3, 3, 1); rect(61, y + 2, 6, 3, 1); rect(67, y, 3, 3, 1);
+    rect(58, y, 3, 3, 1, true); rect(61, y + 2, 6, 3, 1, true); rect(67, y, 3, 3, 1, true);
   }
 }
 }  // namespace pocket
