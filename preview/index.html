@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pocket Eyes — animation rehearsal</title>
+  <style>
+    :root { color-scheme: light; --paper:#edf1f6; --ink:#25334b; --blue:#244dba; --cyan:#65e6ef; --line:#bac5d5; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--paper); color:var(--ink); font-family:"Avenir Next",Avenir,"Segoe UI",sans-serif; }
+    main { max-width:1100px; margin:auto; padding:46px 28px; }
+    header { display:flex; align-items:baseline; justify-content:space-between; gap:24px; }
+    h1 { font-size:clamp(32px,5vw,54px); letter-spacing:-2px; margin:0; font-weight:650; }
+    header p { margin:0; font-size:15px; }
+    .workbench { display:grid; grid-template-columns:minmax(0,1fr) 230px; gap:48px; margin:42px 0 30px; align-items:center; }
+    .stage { aspect-ratio:4/3; display:grid; place-items:center; background:#d9e2f0; border-radius:24px; position:relative; padding:30px; }
+    .screen { width:85%; max-width:400px; aspect-ratio:1; background:#000; border:12px solid #34445b; border-radius:50%; display:grid; place-items:center; box-shadow:0 12px 0 #b1bfd3; overflow:hidden; }
+    canvas { width:100%; display:block; border-radius:50%; }
+    .stage-label { position:absolute; bottom:14px; margin:0; font-size:12px; color:#475a76; }
+    .controls { display:grid; gap:10px; }
+    button { font:inherit; font-weight:600; min-height:46px; padding:10px 16px; border:1px solid var(--line); border-radius:9px; background:#fff; color:var(--ink); text-align:left; cursor:pointer; }
+    button:hover { border-color:var(--blue); }
+    button:focus-visible,input:focus-visible,a:focus-visible { outline:3px solid var(--blue); outline-offset:4px; }
+    button[aria-pressed="true"] { background:var(--blue); color:white; border-color:var(--blue); }
+    kbd { float:right; font:inherit; opacity:.7; }
+    .secondary { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:8px 0; }
+    .secondary button { text-align:center; }
+    label { font-size:14px; display:flex; align-items:center; gap:8px; }
+    input[type=checkbox] { width:18px; height:18px; accent-color:var(--blue); }
+    .note { font-size:13px; line-height:1.6; margin:8px 0 0; }
+    .timeline { display:grid; grid-template-columns:70px 1fr; gap:14px; align-items:center; }
+    output { font-variant-numeric:tabular-nums; }
+    input[type=range] { width:100%; accent-color:var(--blue); }
+    footer { margin-top:26px; border-top:1px solid var(--line); padding-top:20px; display:flex; justify-content:space-between; gap:30px; font-size:14px; line-height:1.6; }
+    footer p { max-width:60ch; margin:0; }
+    a { color:var(--blue); }
+    body.clean { background:black; }
+    body.clean header,body.clean .controls,body.clean .timeline,body.clean footer,body.clean .stage-label { display:none; }
+    body.clean main { max-width:none; padding:0; }
+    body.clean .workbench { display:block; margin:0; }
+    body.clean .stage { height:100vh; aspect-ratio:auto; background:black; border-radius:0; }
+    body.clean .screen { border:0; border-radius:50%; box-shadow:none; width:min(90vw,90vh); max-width:900px; }
+    @media(max-width:720px) { main { padding:25px 18px; } header { display:block; } header p { margin-top:12px; } .workbench { grid-template-columns:1fr; gap:28px; margin-top:28px; } .stage { aspect-ratio:4/3; padding:20px; } .controls { grid-template-columns:1fr 1fr; } .secondary,.note { grid-column:1/-1; } footer { display:block; } footer p { margin-bottom:14px; } }
+  </style>
+</head>
+<body>
+<main>
+  <header><h1>Pocket Eyes</h1><p>Making tech fun again · Episode one</p></header>
+  <div class="workbench">
+    <section class="stage" aria-label="Animation preview">
+      <div class="screen"><canvas width="466" height="466" role="img" aria-label="Two expressive eyes that blink, look around, smile and wink"></canvas></div>
+      <p class="stage-label">Waveshare 1.75-inch AMOLED · 466 × 466 preview</p>
+    </section>
+    <section class="controls" aria-label="Playback controls">
+      <button id="eyes" aria-pressed="true">Eyes reveal <kbd>E</kbd></button>
+      <button id="demo" aria-pressed="false">Project demo <kbd>D</kbd></button>
+      <div class="secondary"><button id="reset">Restart · R</button><button id="pause">Pause · P</button></div>
+      <label><input id="warm" type="checkbox" checked> Amber eyes</label>
+      <button id="clean">Clean view · F</button>
+      <p class="note">One 16-second take: wake up, look around, smile, wink. Restart for the same reveal. Esc leaves clean view.</p>
+    </section>
+  </div>
+  <div class="timeline"><output id="time">0.0 s</output><input id="scrub" type="range" min="0" max="15999" step="1" value="0" aria-label="Animation position in milliseconds"></div>
+  <footer><p>The motion comes from the firmware’s C++ animation core. Actual panel color and refresh still need a board test. The project demo is our display check, not the factory demo.</p><p><a href="../docs/FILMING.md">Filming checklist</a><br><a href="../README.md">Project notes</a></p></footer>
+</main>
+<script src="frames.js"></script>
+<script src="preview.js"></script>
+</body>
+</html>

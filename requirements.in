@@ -1,0 +1,3 @@
+# Host tools only. Firmware/toolchain pins are in dependencies.json.
+esptool==5.1.0
+pyserial==3.5
